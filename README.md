@@ -10,9 +10,8 @@ Among the features that differ OpenCPE from other monitoring/notification system
 - Eliminate integrations by not requiring metrics to go through a data-agreggator 
 
 ## Architecture Overview
+<img width="1159" height="605" alt="openCPEBasicArchitecture" src="https://github.com/user-attachments/assets/c455be7f-57bd-4762-8386-51f0dab7b53d" />
 
-
-TBD
 
 ## Installation
 > TODO: Provide a release version so it can be installed more easily
@@ -40,4 +39,5 @@ export PATH=$PATH:~/go/bin
 ## Getting Started
 
 TBD
+
 
