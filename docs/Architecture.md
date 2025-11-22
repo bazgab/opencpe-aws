@@ -1,2 +1,0 @@
-## OpenCPE Basic Architecture
-
