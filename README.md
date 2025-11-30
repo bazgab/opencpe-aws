@@ -1,7 +1,7 @@
 # OpenCPE - Open Cloud Policy Executor
 **_IMPORTANT_: Work in Progress - not ready for usage**
 
-OpenCPE aims to be an all-in-one tool for Cloud resource control with heavily opinionated defaults, focusing on ease of use and maintenance. 
+OpenCPE aims to be an all-in-one tool for Cloud resource control focused on notification capabilities with heavily opinionated defaults, aiming at ease of use and maintenance. 
 
 Among the features that differ OpenCPE from other monitoring/notification systems, it includes:
 - Pre-defined sensible policies, avoiding a learning curve by requiring users to write their own policies
@@ -9,6 +9,7 @@ Among the features that differ OpenCPE from other monitoring/notification system
 - Simple configuration, being able to parse all required configuration options by a single JSON file
 - Ability to run multiple accounts with specific differing environment needs for each
 - Specific edge-case manipulation of policies by including tag-based "ignore" capabilities defined in the configuration file
+- Focus on Notification capabilities, for when deleting a resource is a "last-case scenario" and manually having a back and forth with your colleagues is ineffective 
   
 
 ## Architecture Overview
@@ -41,6 +42,7 @@ export PATH=$PATH:~/go/bin
 ## Getting Started
 
 TBD
+
 
 
 
