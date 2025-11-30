@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"github.com/bazgab/opencpe/config"
+	"github.com/bazgab/opencpe/utils/logging"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -31,7 +32,9 @@ A comprehensive policy reference and usage instructions can be found at https://
 		fmt.Printf("Policy: %s\n", flagPolicy)
 		fmt.Printf("Region: %s\n", flagRegion)
 
+		// Testing packages
 		config.LoadConfig()
+		logging.ResourceInfoLogging()
 	},
 }
 
