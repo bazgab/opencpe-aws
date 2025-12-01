@@ -8,6 +8,7 @@ Sample Usage
 ```sh
 opencpe --config="configuration.json" --policy="instance-age" --region="us-east-1" --action="notify"
 ```
+
 Example Configuration file:
 
 ```json
@@ -15,12 +16,21 @@ Example Configuration file:
     "authentication": {
         "aws_profile": "db-prod" 
     },
+    "notification": {
+        "smtp_host": "smtp.example.com",
+        "smtp_port": "587",
+        "email_from": "admin@example.com",
+        "email_password":"your-secure-password"
+    },
     "ignored_tags": {
         "owner": "admin",
         "project": "current-project-name"
     }
 }
 ```
+Important: The email will be sent to the resource owner's email, which should be tagged in the resource as "OwnerEmail" as the key and their respective email as the value
+
+
 ## Reference
 | Key               |  Type          | Description                                                                                                                     |
 |-------------------|:--------------:|---------------------------------------------------------------------------------------------------------------------------------|
