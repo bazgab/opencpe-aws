@@ -6,7 +6,7 @@
 Sample Usage
 
 ```sh
-opencpe --config="configuration.json" --policy="instance-age" --region="us-east-1" --action="notify"
+opencpe notify --config="configuration.json" --policy="instance-age" --region="us-east-1" 
 ```
 
 Example Configuration file:
