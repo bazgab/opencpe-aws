@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/bazgab/opencpe/utils/logging"
 	"github.com/spf13/cobra"
 )
 
@@ -18,8 +19,9 @@ var notifyCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		// Checking if global flags are working
-		fmt.Println("Priting value from global flags")
-		fmt.Printf("Policy: %s\n", flagPolicy)
+		fmt.Println("Query Request Output:")
+		logging.TextRequestOutputLogger("Printing values from global flags", flagConfig, flagPolicy, flagRegion)
+
 	},
 }
 

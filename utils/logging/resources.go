@@ -25,12 +25,14 @@ func JSONInfoLogger() {
 	)
 }
 
-func TextInfoLogger() {
+func TextRequestOutputLogger(msg string, config string, policy string, region string) {
 	TextLogger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 	TextLogger.LogAttrs(
 		context.Background(),
 		slog.LevelInfo,
-		"sample message",
-		slog.String("method", "GET"),
+		msg,
+		slog.String("ConfigFile", config),
+		slog.String("Policy", policy),
+		slog.String("Region", region),
 	)
 }
