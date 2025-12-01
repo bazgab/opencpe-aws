@@ -6,6 +6,28 @@ import (
 	"github.com/spf13/cobra"
 )
 
+type Config struct {
+	Authentication Authentication `json:"authentication"`
+	Notification   Notification   `json:"notification"`
+	IgnoredTags    IgnoredTags    `json:"ignored_tags"`
+}
+
+type Authentication struct {
+	AwsProfile string `json:"aws_profile"`
+}
+
+type Notification struct {
+	SmtpHost      string `json:"smtp_host"`
+	SmtpPort      int    `json:"smtp_port"`
+	EmailFrom     string `json:"email_from"`
+	EmailPassword string `json:"email_password"`
+}
+
+type IgnoredTags struct {
+	Owner   string `json:"owner"`
+	Project string `json:"project"`
+}
+
 var notifyCmd = &cobra.Command{
 	Use:   "notify",
 	Short: "only notify resource owners",
