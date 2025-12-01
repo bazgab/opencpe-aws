@@ -2,15 +2,14 @@ package config
 
 import (
 	"context"
-	"log"
-
 	"github.com/aws/aws-sdk-go-v2/config"
+	"log"
 )
 
-func LoadConfig() {
+func LoadConfig(profile string) {
 	// Expected JSON value from configuration file
 	_, err := config.LoadDefaultConfig(context.TODO(),
-		config.WithSharedConfigProfile(""),
+		config.WithSharedConfigProfile(profile),
 	)
 	if err != nil {
 		log.Fatalf("unable to load SDK config: %v", err)
