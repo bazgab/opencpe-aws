@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/bazgab/opencpe/config"
-	"github.com/bazgab/opencpe/utils/logging"
+	//"github.com/bazgab/opencpe/config"
+	//"github.com/bazgab/opencpe/utils/logging"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -27,10 +27,11 @@ A comprehensive policy reference and usage instructions can be found at https://
 			return
 		}
 
-		// Testing packages
+		/* Testing packages
 		config.LoadConfig()
 		logging.JSONInfoLogger()
 		logging.TextInfoLogger()
+		*/
 	},
 }
 
@@ -46,10 +47,5 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&flagConfig, "config", "", "Configuration file")
 	rootCmd.PersistentFlags().StringVar(&flagPolicy, "policy", "", "Policy to be executed")
 	rootCmd.PersistentFlags().StringVar(&flagRegion, "region", "", "Region to be queried")
-	/*
-		err := rootCmd.MarkPersistentFlagRequired("config")
-		if err != nil {
-			panic(err)
-		}
-	*/
+
 }
