@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/bazgab/opencpe/config"
+	"github.com/bazgab/opencpe/policies"
 	"github.com/bazgab/opencpe/utils/logging"
 	"github.com/spf13/cobra"
 	"log/slog"
@@ -45,8 +46,8 @@ var notifyCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		// Checking if global flags are working
-		fmt.Println("Query Request Output:")
-		logging.TextRequestOutputLogger("Printing values from global flags", flagConfig, flagPolicy, flagRegion)
+		fmt.Println("OpenCPE - Notify")
+		logging.TextRequestOutputLogger("Query Request Output", flagConfig, flagPolicy, flagRegion)
 
 		cfgFile, err := os.ReadFile(flagConfig)
 		if err != nil {
@@ -63,9 +64,9 @@ var notifyCmd = &cobra.Command{
 		fmt.Println("")
 		fmt.Println("Loaded Configuration:")
 		fmt.Printf("-- Authentication.Profile: %s\n", cfg.Authentication.AwsProfile)
-		fmt.Printf("-- Notification.SMTP Host: %s\n", cfg.Notification.SmtpHost)
-		fmt.Printf("-- Notification.SMTP Port: %d\n", cfg.Notification.SmtpPort)
-		fmt.Printf("-- Notification.From Email: %s\n", cfg.Notification.EmailFrom)
+		fmt.Printf("-- Notification.SMTP_Host: %s\n", cfg.Notification.SmtpHost)
+		fmt.Printf("-- Notification.SMTP_Port: %d\n", cfg.Notification.SmtpPort)
+		fmt.Printf("-- Notification.From_Email: %s\n", cfg.Notification.EmailFrom)
 		for _, owner := range cfg.IgnoredTags.Owner {
 			fmt.Printf("-- IgnoredTags.Owner: %s\n", owner)
 		}
@@ -74,8 +75,14 @@ var notifyCmd = &cobra.Command{
 		}
 		logging.BreakerLine()
 		fmt.Println()
+
 		//Load AWS Profile Config
 		config.LoadConfig(cfg.Authentication.AwsProfile)
+
+		//Check for policy
+		if flagPolicy == "instance-age-2-days" {
+			policies.InstanceAge2Days()
+		}
 
 	},
 }
