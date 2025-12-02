@@ -3,7 +3,6 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/bazgab/opencpe/config"
 	"github.com/bazgab/opencpe/policies"
 	"github.com/bazgab/opencpe/utils/logging"
 	"github.com/spf13/cobra"
@@ -76,12 +75,9 @@ var notifyCmd = &cobra.Command{
 		logging.BreakerLine()
 		fmt.Println()
 
-		//Load AWS Profile Config
-		config.LoadConfig(cfg.Authentication.AwsProfile)
-
 		//Check for policy
 		if flagPolicy == "instance-age-2-days" {
-			policies.InstanceAge2Days()
+			policies.InstanceAge2Days(cfg.Authentication.AwsProfile, flagRegion)
 		}
 
 	},
