@@ -7,6 +7,7 @@ import (
 	"github.com/bazgab/opencpe/utils/errors"
 	"github.com/bazgab/opencpe/utils/logging"
 	"github.com/spf13/cobra"
+	"log"
 	"log/slog"
 	"os"
 )
@@ -48,7 +49,6 @@ var notifyCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Checking if global flags are working
 		fmt.Println("OpenCPE - Notify")
-		logging.TextRequestOutputLogger("Query Request Output", flagConfig, flagPolicy, flagRegion)
 
 		cfgFile, err := os.ReadFile(flagConfig)
 		if err != nil {
@@ -65,6 +65,7 @@ var notifyCmd = &cobra.Command{
 		fmt.Println("")
 		fmt.Println("Loaded Configuration:")
 		fmt.Printf("-- Authentication.Profile: %s\n", cfg.Authentication.AwsProfile)
+		fmt.Printf("-- Authentication.Account_Id: %d\n", cfg.Authentication.AwsAccountId)
 		fmt.Printf("-- Notification.SMTP_Host: %s\n", cfg.Notification.SmtpHost)
 		fmt.Printf("-- Notification.SMTP_Port: %d\n", cfg.Notification.SmtpPort)
 		fmt.Printf("-- Notification.From_Email: %s\n", cfg.Notification.EmailFrom)
@@ -81,10 +82,27 @@ var notifyCmd = &cobra.Command{
 
 		//Check for policy
 		if flagPolicy == "instance-age-2-days" {
+			fmt.Println("")
 			fmt.Println("Policy: instance-age-2-days")
 			fmt.Printf("Profile: %s\n", cfg.Authentication.AwsProfile)
 			fmt.Printf("Region: %s\n", flagRegion)
-			policies.InstanceAge2Days(cfg.Authentication.AwsProfile, flagRegion)
+
+			appConfig, _ := policies.LoadConfig("config.json")
+
+			// 2. Pass the map to the policy function
+			instances, err := policies.InstanceAge2Days(cfg.Authentication.AwsProfile, flagRegion, appConfig.IgnoredTags)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			logging.BreakerLine()
+			fmt.Println("")
+			fmt.Printf("Received %d instances.\n", len(instances))
+
+			for _, inst := range instances {
+				fmt.Printf("[Instance Name: %s | Instance Id: %s | Owner: %s | Uptime: %d]\n", inst.Name, inst.Id, inst.Owner, inst.Uptime)
+
+			}
 
 		}
 

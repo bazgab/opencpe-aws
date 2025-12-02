@@ -17,7 +17,6 @@ func IdentityCheck(profile string, region string, account int) {
 	expectedAccount := account
 
 	fmt.Println("Identity Check:")
-	fmt.Println("")
 	fmt.Println("----- ENVIRONMENT DIAGNOSTICS -----")
 	if os.Getenv("AWS_PROFILE") == "" {
 		fmt.Println("AWS_PROFILE env var not set.")
@@ -31,8 +30,6 @@ func IdentityCheck(profile string, region string, account int) {
 	}
 	fmt.Println("-----------------------------------")
 
-	fmt.Println("")
-	// Load Config
 	cfg, err := config.LoadDefaultConfig(context.TODO(),
 		config.WithSharedConfigProfile(targetProfile),
 		config.WithRegion(targetRegion),
