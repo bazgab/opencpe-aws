@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h3>Resource Action Required!</h3>
+    <br>
+ 	<br>	
+    <p>Your Instance <b>{{ .InstanceName }}</b> is infringing <b>{{ .Policy}}</b> policy set by your Cloud Administrator.  </p>
+	<br>
+    <p>Instance Information:
+    <ol>
+    	<li>Instance Name: {{ .InstanceName }} </li>
+    	<li>Instance Id: {{ .InstanceId }}</li>
+    	<li>Instance Region: {{ .Region }} </li>
+    	<li>AWS Account: {{ .AwsAccount }}</li>
+    </ol>
+    </p>
+</body>
+</html>
