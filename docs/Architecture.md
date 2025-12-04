@@ -14,26 +14,30 @@ Example Configuration file:
 ```json
 {
     "authentication": {
-        "aws_profile": "db-prod"
-        "aws_account_id": 9037210985
+        "aws_profile": "prod",
+        "aws_account_id": 0123456789,
+        "aws_account_name": "Development-team" 
     },
     "notification": {
-        "smtp_host": "smtp.example.com",
-        "smtp_port": "587",
-        "email_from": "admin@example.com",
-        "email_password":"your-secure-password"
+        "smtp_endpoint": "email-smtp.us-east-1.amazonaws.com",
+        "smtp_port": 587,
+        "smtp_user": "AKIAXXXXXXXXXX",
+        "smtp_password":"XXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+        "sender_email": "alert@yourcompany.com"
     },
     "ignored_tags": {
-        "owner": ["admin", "project-lead"]
-        "project": ["current-project-name"]
+        "owner": [ "admin"],
+        "project": ["current-project-name", "second-project"]
     }
 }
+
 ```
 
 ### Important Notes: 
 
-- The email will be sent to the resource owner's email, which should be tagged in the resource as "OwnerEmail" as the key and their respective email as the value
+- The email will be sent to the resource owner's email, which should be tagged in the resource as "Owner" as the key and their respective email as the value
 - As of the time of writing this, OpenCPE only checks for instances that have the state of "running"
+- Sending Email is only supported through Amazon SES for AWS
 
 
 ## Reference
