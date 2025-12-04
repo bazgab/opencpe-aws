@@ -31,6 +31,7 @@ type Config struct {
 		SmtpUser     string `json:"smtp_user"`
 		SmtpPassword string `json:"smtp_password"`
 		SenderEmail  string `json:"sender_email"`
+		AdminEmail   string `json:"admin_email"`
 	} `json:"notification"`
 
 	IgnoredTags struct {
@@ -45,6 +46,7 @@ type EmailData struct {
 	InstanceId   string
 	Region       string
 	AwsAccount   string
+	AdminEmail   string
 }
 
 var notifyCmd = &cobra.Command{
@@ -52,7 +54,6 @@ var notifyCmd = &cobra.Command{
 	Short: "notify resource owners of policy infringement",
 	Long:  `This command only notifies resource owners of policy infringement, as opposed to notify-and-delete.`,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
-		// Check if the global flag "policy" was actually set by the user
 		RequiredFlags := []string{"config", "policy", "region"}
 		for _, flag := range RequiredFlags {
 			if !cmd.Flags().Changed(flag) {
@@ -63,7 +64,7 @@ var notifyCmd = &cobra.Command{
 		return nil
 	},
 	Run: func(cmd *cobra.Command, args []string) {
-		// Checking if global flags are working
+		fmt.Println("")
 		fmt.Println("OpenCPE - Notify")
 
 		cfgFile, err := os.ReadFile(flagConfig)
@@ -87,6 +88,7 @@ var notifyCmd = &cobra.Command{
 		fmt.Printf("-- Notification.SMTP_Port: %d\n", cfg.Notification.SmtpPort)
 		fmt.Printf("-- Notification.SMTP_User: %s\n", cfg.Notification.SmtpUser)
 		fmt.Printf("-- Notification.Sender_Email: %s\n", cfg.Notification.SenderEmail)
+		fmt.Printf("-- Notification.Admin_Email: %s\n", cfg.Notification.AdminEmail)
 		for _, owner := range cfg.IgnoredTags.Owner {
 			fmt.Printf("-- IgnoredTags.Owner: %s\n", owner)
 		}
@@ -98,7 +100,7 @@ var notifyCmd = &cobra.Command{
 
 		errors.IdentityCheck(cfg.Authentication.AwsProfile, flagRegion, cfg.Authentication.AwsAccountId)
 
-		//Check for policy
+		//Only one policy so far, but this logic will have to be re-written
 		if flagPolicy == "instance-age-2-days" {
 			fmt.Println("")
 			fmt.Println("Policy: instance-age-2-days")
@@ -116,21 +118,21 @@ var notifyCmd = &cobra.Command{
 			fmt.Println("")
 			fmt.Printf("Received %d instances.\n", len(instances))
 
-			// Parsing files before the loop for memory efficiency
+			// Parsing template before the loop for memory efficiency
 			t, err := template.ParseFiles("utils/templates/email_template.html")
 			if err != nil {
 				log.Fatal("Could not parse template:", err)
 			}
-			// INSIDE YOUR LOOP
+			// Loop for finding instances that match filters
 			for _, inst := range instances {
-				fmt.Printf("[Instance Name: %s | Instance Id: %s]\n", inst.Name, inst.Id)
+				fmt.Printf("[ Instance Name: %s | Instance Id: %s | Owner: %s ]\n", inst.Name, inst.Id, inst.Owner)
 
-				// --- 1. PREPARE CONTENT ---
 				d := EmailData{
 					InstanceName: inst.Name,
 					InstanceId:   inst.Id,
 					Region:       flagRegion,
 					AwsAccount:   cfg.Authentication.AwsAccountName,
+					AdminEmail:   cfg.Notification.AdminEmail,
 				}
 
 				var body bytes.Buffer
@@ -139,32 +141,29 @@ var notifyCmd = &cobra.Command{
 					continue
 				}
 
-				// Header Fix
+				// Headers have to be manually created (as opposed to templated) for security reasons.
+				// Templated headers would have to be interpreted by the text/template package
+				// which does not have built-in output encoding to protect against XSS attacks
 
 				headers := "From: " + cfg.Notification.SenderEmail + "\r\n" +
 					"To: " + inst.Owner + "\r\n" +
-					"Subject: Resource Action Required on Instance " + inst.Name + "!\r\n" +
+					"Subject:[ACTION REQUIRED] Review: AWS Instance '" + inst.Name + "' Policy Non-compliance\r\n" +
 					"MIME-Version: 1.0\r\n" +
 					"Content-Type: text/html; charset=UTF-8\r\n" +
 					"\r\n"
 
 				msg := []byte(headers + body.String())
 
-				// --- 2. CONNECTION SETUP (PORT 587 SPECIFIC) ---
 				addr := fmt.Sprintf("%s:%d", cfg.Notification.SmtpEndpoint, cfg.Notification.SmtpPort)
 
-				fmt.Printf("⏳ Attempting connection to %s with 5s timeout...\n", addr)
-
-				// Use DialTimeout. If this errors, your Network is blocking you.
 				conn, err := net.DialTimeout("tcp4", addr, 5*time.Second)
 				if err != nil {
 					log.Printf("❌ NETWORK ERROR: Your firewall/ISP/Cloud Provider is blocking Port 587.\nError details: %v", err)
 					continue
 				}
 
-				fmt.Println("✅ TCP Connection established! (The issue was not the network)")
-				// A. Plain TCP Connection (Force IPv4)
-				// We use net.Dial, NOT tls.Dial because 587 starts as plain text
+				fmt.Println("✅ TCP Connection established!")
+
 				fmt.Println("Dialing Port 587 via IPv4...")
 				conn, err = net.Dial("tcp4", addr)
 				if err != nil {
@@ -172,15 +171,15 @@ var notifyCmd = &cobra.Command{
 					continue
 				}
 
-				// B. Create SMTP Client
+				// Creating SMTP Client
 				c, err := smtp.NewClient(conn, cfg.Notification.SmtpEndpoint)
 				if err != nil {
 					log.Printf("❌ Client creation failed: %v", err)
-					conn.Close() // Close raw connection if client fails
+					conn.Close()
 					continue
 				}
 
-				// C. Upgrade to TLS (StartTLS) - REQUIRED for Port 587
+				// Upgrading to TLS - REQUIRED for Port 587
 				tlsConfig := &tls.Config{
 					InsecureSkipVerify: false,
 					ServerName:         cfg.Notification.SmtpEndpoint,
@@ -191,8 +190,7 @@ var notifyCmd = &cobra.Command{
 					continue
 				}
 
-				// --- 3. AUTHENTICATE ---
-				// Must happen AFTER StartTLS
+				// Authenticating
 				auth := smtp.PlainAuth("", cfg.Notification.SmtpUser, cfg.Notification.SmtpPassword, cfg.Notification.SmtpEndpoint)
 				if err = c.Auth(auth); err != nil {
 					log.Printf("❌ Authentication failed: %v", err)
@@ -200,7 +198,7 @@ var notifyCmd = &cobra.Command{
 					continue
 				}
 
-				// --- 4. SEND EMAIL ---
+				// Sending
 				if err = c.Mail(cfg.Notification.SenderEmail); err != nil {
 					log.Printf("❌ Sending failure on SenderEmail: %v", err)
 					c.Quit()
@@ -234,7 +232,6 @@ var notifyCmd = &cobra.Command{
 					continue
 				}
 
-				// --- 5. CLEANUP ---
 				c.Quit()
 				fmt.Println("✅ Success! Email sent via Port 587.")
 			}
