@@ -1,4 +1,4 @@
-module github.com/bazgab/opencpe
+module github.com/bazgab/opencpe-aws
 
 go 1.25.4
 

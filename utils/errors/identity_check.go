@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
-	"github.com/bazgab/opencpe/utils/logging"
+	"github.com/bazgab/opencpe-aws/utils/logging"
 	"log"
 	"os"
 	"strconv"
