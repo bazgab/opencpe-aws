@@ -1,4 +1,4 @@
-# OpenCPE - Open Cloud Policy Executor
+# OpenCPE - Open Cloud Policy Executor (AWS)
 **_IMPORTANT_: Work in Progress - not ready for usage**
 
 OpenCPE aims to be an all-in-one tool for Cloud resource control focused on notification capabilities with heavily opinionated defaults, aiming at ease of use and maintenance. 
@@ -13,7 +13,7 @@ Among the features that differ OpenCPE from other monitoring/notification system
   
 
 ## Architecture Overview
-<img width="1159" height="605" alt="openCPEBasicArchitecture" src="https://github.com/user-attachments/assets/c455be7f-57bd-4762-8386-51f0dab7b53d" />
+<img width="1095" height="577" alt="OpenCPEBasicArchitecturev2" src="https://github.com/user-attachments/assets/fa02ac6a-53c2-4407-9a4e-e151ff9d51e3" />
 
 
 ## Installation
@@ -42,6 +42,7 @@ export PATH=$PATH:~/go/bin
 ## Getting Started
 
 TBD
+
 
 
 
