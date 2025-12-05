@@ -110,7 +110,35 @@
 
             <div class="content">
                 <h1>Resource Action Required</h1>
+
+                <p> Dear Colleague,</p> 
                 
+                <p>This is an automated notification from your Cloud Administrator’s resource monitoring tool. </p>
+                
+                <p>Your AWS instance {{ .InstanceName }} is non-compliant according to the {{ .Policy }} policy set by your organization's resource management policies. Non-compliant instances impact overall resource efficiency and incur unnecessary operational costs.</p>
+                
+                <p>Action Required:</p> 
+                
+                <p>You must take one of the following actions to ensure compliance:</p>
+                <ul>
+                    <li>Decommission: If the instance is no longer needed, please shut it down immediately.</li>
+                    <li>Establish Deadline: If the instance must remain running temporarily, please update its resource tags with a clear shutdown date (e.g., Shutdown-Date: YYYY-MM-DD). Instances without an updated tag will be subject to automated decommissioning after the specified review period.</li>
+                </ul>
+                
+                
+                <p>Instance Details for Verification:</p>
+                <ul>
+                    <li>Policy: {{ . Policy }}</li>
+                    <li>Instance Name: {{ .InstanceName }}</li>
+                    <li>Instance Id: {{ .InstanceId }}</li>
+                    <li>Region: {{ .Region }}</li>
+                    <li>AWS Account: {{ .AwsAccount }}</li>
+                </ul>
+                
+                <p>If you believe this instance is critical, permanent, or should be exempt from the current policy, please contact your Cloud Administration Team at {{ .AdminEmail }} with detailed information so the team can review and apply necessary changes to your instance tag configuration.</p>
+                
+                <p>Thank you for your prompt cooperation in maintaining organizational standards.</p>               
+			    
                  
 			    
             </div>
