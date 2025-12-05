@@ -125,17 +125,16 @@
                     <li>Establish Deadline: If the instance must remain running temporarily, please update its resource tags with a clear shutdown date (e.g., Shutdown-Date: YYYY-MM-DD). Instances without an updated tag will be subject to automated decommissioning after the specified review period.</li>
                 </ul>
                 
-                
-                <p>Instance Details for Verification:</p>
+                <p><b>Instance Details:</b></p>
                 <ul>
-                    <li>Policy: <b>{{ . Policy }}</b></li>
+                    <li>Policy: <b>{{ .Policy }}</b></li>
                     <li>Instance Name: <b>{{ .InstanceName }}</b></li>
                     <li>Instance Id: <b>{{ .InstanceId }}</b></li>
                     <li>Region: <b>{{ .Region }}</b></li>
                     <li>AWS Account: <b>{{ .AwsAccount }}</b></li>
                 </ul>
                 
-                <p>If you believe this instance is critical, permanent, or should be exempt from the current policy, please contact your Cloud Administration Team at {{ .AdminEmail }} with detailed information so the team can review and apply necessary changes to your instance tag configuration.</p>
+                <p>If you believe this instance is critical, permanent, or should be exempt from the current policy, please contact your Cloud Administration Team at <b>{{ .AdminEmail }}</b> with detailed information so the team can review and apply necessary changes to your instance tag configuration.</p>
                 
                 <p>Thank you for your prompt cooperation in maintaining organizational standards.</p>               
 			   

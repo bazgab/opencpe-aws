@@ -121,6 +121,7 @@ var notifyCmd = &cobra.Command{
 			fmt.Printf("[ Instance Name: %s | Instance Id: %s | Owner: %s ]\n", inst.Name, inst.Id, inst.Owner)
 
 			d := EmailData{
+				Policy:       flagPolicy,
 				InstanceName: inst.Name,
 				InstanceId:   inst.Id,
 				Region:       flagRegion,

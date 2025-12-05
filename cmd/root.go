@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	//"github.com/bazgab/opencpe/config"
-	//"github.com/bazgab/opencpe/utils/logging"
 	"github.com/spf13/cobra"
 	"os"
 )
@@ -13,12 +11,12 @@ var flagPolicy string
 var flagRegion string
 
 var rootCmd = &cobra.Command{
-	Use:     "opencpe",
+	Use:     "opencpe-aws",
 	Short:   "All-in-one Cloud-Native Policy Engine with sensible defaults",
 	Version: "0.0.1",
 	Long: `OpenCPE is a tool for managing cloud resources with heavily opinionated defaults.
 	
-A comprehensive policy reference and usage instructions can be found at https://github.com/bazgab/opencpe
+A comprehensive policy reference and usage instructions can be found at https://github.com/bazgab/opencpe-aws
 
 Note: All Global Flags are required.
 `,
@@ -29,11 +27,6 @@ Note: All Global Flags are required.
 			return
 		}
 
-		/* Testing packages
-		config.LoadConfig()
-		logging.JSONInfoLogger()
-		logging.TextInfoLogger()
-		*/
 	},
 }
 
@@ -45,6 +38,7 @@ func Execute() {
 }
 
 func init() {
+	rootCmd.AddCommand(notifyCmd)
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	rootCmd.PersistentFlags().StringVar(&flagConfig, "config", "", "Configuration file")
 	rootCmd.PersistentFlags().StringVar(&flagPolicy, "policy", "", "Policy to be executed")
