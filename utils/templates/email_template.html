@@ -113,11 +113,11 @@
 
                 <p> Dear Colleague,</p> 
                 
-                <p>This is an automated notification from your Cloud Administrator’s resource monitoring tool. </p>
+                <p>This is an automated notification from your Cloud Administrator’s resource monitoring tool.</p>
                 
-                <p>Your AWS instance {{ .InstanceName }} is non-compliant according to the {{ .Policy }} policy set by your organization's resource management policies. Non-compliant instances impact overall resource efficiency and incur unnecessary operational costs.</p>
+                <p>Your AWS instance <b>{{ .InstanceName }}</b> is non-compliant according to the <b>{{ .Policy }}</b> policy set by your organization's resource management policies. Non-compliant instances impact overall resource efficiency and incur unnecessary operational costs.</p>
                 
-                <p>Action Required:</p> 
+                <p><b>Action Required:</b></p> 
                 
                 <p>You must take one of the following actions to ensure compliance:</p>
                 <ul>
@@ -128,19 +128,17 @@
                 
                 <p>Instance Details for Verification:</p>
                 <ul>
-                    <li>Policy: {{ . Policy }}</li>
-                    <li>Instance Name: {{ .InstanceName }}</li>
-                    <li>Instance Id: {{ .InstanceId }}</li>
-                    <li>Region: {{ .Region }}</li>
-                    <li>AWS Account: {{ .AwsAccount }}</li>
+                    <li>Policy: <b>{{ . Policy }}</b></li>
+                    <li>Instance Name: <b>{{ .InstanceName }}</b></li>
+                    <li>Instance Id: <b>{{ .InstanceId }}</b></li>
+                    <li>Region: <b>{{ .Region }}</b></li>
+                    <li>AWS Account: <b>{{ .AwsAccount }}</b></li>
                 </ul>
                 
                 <p>If you believe this instance is critical, permanent, or should be exempt from the current policy, please contact your Cloud Administration Team at {{ .AdminEmail }} with detailed information so the team can review and apply necessary changes to your instance tag configuration.</p>
                 
                 <p>Thank you for your prompt cooperation in maintaining organizational standards.</p>               
-			    
-                 
-			    
+			   
             </div>
 
         </div>
