@@ -38,7 +38,6 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.AddCommand(notifyCmd)
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 	rootCmd.PersistentFlags().StringVar(&flagConfig, "config", "", "Configuration file")
 	rootCmd.PersistentFlags().StringVar(&flagPolicy, "policy", "", "Policy to be executed")
