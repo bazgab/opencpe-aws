@@ -43,9 +43,11 @@ export PATH=$PATH:~/go/bin
 Extensive information on how to use OpenCPE can be found on the docs folder of this repository. For further questions please do not hesitate to open an issue. 
 
 ### Content
-- Getting Started
-- Installation
-- Configuration
+- [Getting Started](https://github.com/bazgab/opencpe/blob/master/docs/Getting_Started.md)
+- [Installation](https://github.com/bazgab/opencpe/blob/master/docs/Installation.md)
+- [Configuration](https://github.com/bazgab/opencpe/blob/master/docs/Configuration.md)
+- [Policy Reference](https://github.com/bazgab/opencpe/blob/master/docs/Policy_Reference.md)
+
 
 
 
